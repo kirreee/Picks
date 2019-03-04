@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="container">
+    <div class="row" style="background-color:aliceblue;">
+        <div class="col-md-12 text-center">
+            <h3>Upload Image</h3>
+            <hr />
+        </div>
+        <div class="col-md-12 text-center">
+            <input type="file" name="id" />
+            <select class="form-control w-50" id="categorySelectList"></select>
+        </div>
+        <hr />
+    </div>
+    <div class="row mt-5" style="background-color:antiquewhite;">
+        <div class="col-md-12 text-center ">
+            <h3>Create a new category</h3><hr />
+        </div>
+        <div class="col-md-12 text-center">
+            <input type="text" placeholder="Name" class="form-control w-50" id="categoryName" />
+        </div>
+        <div class="col-md-12 text-center mt-3">
+            <button class="btn btn-sm btn-success" id="sumbit">Create category</button>
+        </div>
+    </div>
+    <div class="row mt-5" style="background-color:aquamarine;">
+        <div class="col-md-12 text-center">
+            <h3>Categories</h3>
+            <hr />
+        </div>
+        <div class="col-md-6 text-center">
+            <p>Categories</p>
+        </div>
+        <div class="col-md-3" id="displayCategoryName">
+
+        </div>
+        <div class="col-md-3 text-center">
+            <img src="" class="img-fluid" />
+        </div>
+    </div>
+</div>
+
+<style>
+    #categoryName, select{
+        margin: auto;
+    }
+</style>
+
