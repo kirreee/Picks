@@ -40,6 +40,7 @@ namespace Picks.Web
             });
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IImageRepository, ImageRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

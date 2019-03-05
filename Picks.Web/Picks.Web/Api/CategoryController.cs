@@ -43,7 +43,7 @@ namespace Picks.Web.Api
             {
                 _categoryRepository.AdCategory(model);
 
-                return Ok();
+                return Ok(model);
             }
             catch (Exception ex)
             {
