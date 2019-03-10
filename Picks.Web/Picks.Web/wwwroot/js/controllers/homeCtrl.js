@@ -26,7 +26,6 @@
         url: "/api/ImageUpload/getAllImages"
     }).then(function successCallback(response) {
 
-        console.log(response.data);
         images = response.data;
         $scope.images = images;
 
@@ -92,11 +91,13 @@
     };
 
     $scope.downloadImage = function (id) {
-
+        
         var fileName = $('#categoryName' + id).val();
         var model = {
             FileName: fileName
         };
+
+        
 
         $http({
             method: 'POST',

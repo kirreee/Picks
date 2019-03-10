@@ -7,6 +7,7 @@ namespace Picks.Services.ViewModels
 {
     public class ImageVieModel
     {
+        public int Id { get; set; }
         public string FileName { get; set; }
         public string ImageUrl { get; set; }
         public string CategoryName { get; set; }
@@ -31,10 +32,11 @@ namespace Picks.Services.ViewModels
 
     public class DownloadImageViewModel
     {
+        public int Id { get; set; }
         public string FileName { get; set; }
     }
 
-    public class GetImagesByCategory
+    public class GetImagesByCategoryViewModel
     {
         public string CategoryName { get; set; }
     }

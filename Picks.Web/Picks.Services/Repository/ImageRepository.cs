@@ -35,6 +35,7 @@ namespace Picks.Services.Repository
 
                 var viewModel = new ImageVieModel();
                 {
+                    viewModel.Id = imgs.Id;
                     viewModel.ImageUrl = imgs.ImageUrl;
                     viewModel.FileName = imgs.FileName;
                     viewModel.CategoryName = catName;

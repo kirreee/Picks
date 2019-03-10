@@ -57,14 +57,13 @@
                     <p class="font-weight-bold">
                         Filter images by categories
                     </p>
-                    <select class="form-control" id="selectListCategories">
+                    <select class="form-control text-center" id="selectListCategories">
                         <option>Show all</option>
                         <option ng-repeat="item in categories">{{item.name}}</option>
                     </select>
                 </div>
                 <div class="col-md-12 text-center pt-2 pb-2">
-                    <button class="filtrering-btn" ng-click="startFiltrering()">Start  Filter</button>
-                   
+                    <button class="filtrering-btn" ng-click="startFiltrering()">Start Filter</button>
                 </div>
                 <div class="col-md-2 img-holder text-center" ng-repeat="item in images">
                     <div class="col-md-12">
@@ -102,18 +101,26 @@
         .basketAd-btn:hover, .downloadImage-btn:hover, .goToCategories-btn:hover {
             background-color: #000000;
         }
-    .filtrering-btn {
-        border-radius: 25px;
-        border-color:rgba(0, 0, 0, 0.00);
-        width:10em;
-        background-color: #000000;
-        color: #ffffff;
+
+    select{
+        color:#ffffff!important;
         font-weight:bold;
-        font-family: 'Montserrat', sans-serif !important;
-        cursor:pointer;
-        outline:none!important;
+        text-align:center;
     }
 
+    .filtrering-btn {
+        border-radius: 25px;
+        border-color: rgba(0, 0, 0, 0.00);
+        width: 10em;
+        background-color: #000000;
+        color: #ffffff;
+        font-weight: bold;
+        font-family: 'Montserrat', sans-serif !important;
+        cursor: pointer;
+        outline: none !important;
+    }
+
+   
     .img-holder {
         padding: 0.5em;
         margin: 0.5em;

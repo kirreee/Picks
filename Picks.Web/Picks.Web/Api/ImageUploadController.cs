@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Picks.DAL.DataAccess;
+using Picks.DAL.Models;
 using Picks.Services.Interfaces;
 using Picks.Services.ViewModels;
 using Picks.Web.Models;
@@ -33,7 +34,7 @@ namespace Picks.Web.Api
             _hostingEnvironment = hostingEnvironment;
             _repo = repository;
         }
-        
+
         [Route("adImage")]
         [HttpPost]
         public IActionResult AdFile(List<IFormFile> files)
@@ -147,7 +148,7 @@ namespace Picks.Web.Api
         public IActionResult DownloadImage(DownloadImageViewModel model)
         {
             var fileName = model.FileName;
-            if(string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName))
             {
                 return NotFound();
             }
@@ -158,7 +159,7 @@ namespace Picks.Web.Api
             string zipPath = _hostingEnvironment.WebRootPath + "/ImagesZipFiles/";
             if (string.IsNullOrEmpty(rootPath) || string.IsNullOrEmpty(zipPath))
             {
-                return Ok("Root Path not found!");
+                return NotFound("Root Path not found!");
             }
 
             var zip = ZipFile.Open(zipPath + zipName, ZipArchiveMode.Create);
@@ -167,7 +168,48 @@ namespace Picks.Web.Api
             {
                 zip.CreateEntryFromFile(rootPath + model.FileName, Path.GetFileName(rootPath + model.FileName), CompressionLevel.Optimal);
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            zip.Dispose();
+            return Ok(zipName);
+        }
+
+        [Route("downloadAllImagesFromBasket")]
+        [HttpPost]
+        public IActionResult DownloadAllImagesFromBasket(IEnumerable<DownloadImageViewModel> model)
+        {
+
+            foreach(var basketItem in model)
+            {
+                Basket basket = _ctx.Basket.FirstOrDefault(x => x.Id == basketItem.Id);
+                _ctx.Basket.Remove(basket);
+                _ctx.SaveChanges();
+            }
+  
+
+            var guidId = Guid.NewGuid();
+            string zipName = "Images" + guidId + ".zip";
+            string rootPath = _hostingEnvironment.WebRootPath + "/ImageUpload/";
+            string zipPath = _hostingEnvironment.WebRootPath + "/ImagesZipFiles/";
+            if (string.IsNullOrEmpty(rootPath) || string.IsNullOrEmpty(zipPath))
+            {
+                return NotFound("Root Path not found!");
+            }
+
+            var zip = ZipFile.Open(zipPath + zipName, ZipArchiveMode.Create);
+
+            try
+            {
+                foreach (var files in model)
+                {
+                    zip.CreateEntryFromFile(rootPath + files.FileName, Path.GetFileName(rootPath + files.FileName), CompressionLevel.Optimal);
+                }
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -178,16 +220,17 @@ namespace Picks.Web.Api
 
         [Route("filteringImage")]
         [HttpPost]
-        public IActionResult GetImagesByCategories(GetImagesByCategory model)
+        public IActionResult GetImagesByCategories(GetImagesByCategoryViewModel model)
         {
-            if(model.CategoryName == "Show all")
+            if (model.CategoryName == "Show all")
             {
                 return Ok(_ctx.Images.ToList());
             }
 
-            var images = _ctx.Images.Where(x => x.Category.Name == model.CategoryName);
+            var images = _ctx.Images
+                .Where(x => x.Category.Name == model.CategoryName);
+
             return Ok(images);
         }
-       
     }
 }

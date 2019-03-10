@@ -7,10 +7,31 @@
 
 <div class="container" ng-controller="basketCtrl">
     <div class="row">
-        <div class="col-md-12" ng-repeat="imgs in images">
-              <img src="~/ImageUpload/{{imgs.fileName}}" id="{{img.id}}"  class="img-fluid" />
+        <div class="col-md-12 text-center">
+            <h1>Basket</h1>
+        </div>
+        <div class="col-md-12 text-center">
+            <button class="downloadAllImages-btn" ng-click="downloadAllImages()">Download all images</button>
+            <hr />
+        </div>
+        <div class="col-md-2" ng-repeat="imgs in images">
+            <img src="~/ImageUpload/{{imgs.fileName}}" id="{{img.id}}" class="img-fluid" />
+            <input hidden type="text" id="{{imgs.id}}" class="fisk" ng-model="imgs.fileName" />
+            <input hidden type="number" id="ostKaka" class="ostKaka" ng-model="imgs.id" />
             <hr />
         </div>
     </div>
 </div>
+
+<style>
+    .downloadAllImages-btn{
+        border-radius:25px;
+        background-color:#000000;
+        border-color:rgba(0, 0, 0, 0.00);
+        color:#ffffff;
+        font-weight:bold;
+        outline:none!important;
+        cursor:pointer;
+    }
+</style>
 
