@@ -1,5 +1,6 @@
 ﻿using Picks.DAL.DataAccess;
 using Picks.Services.Interfaces;
+using Picks.Services.ViewModels;
 using Picks.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,32 @@ namespace Picks.Services.Repository
             _ctx = context;
         }
 
-        public List<Image> GetImages()
+        public List<ImageVieModel> GetImages()
         {
-            return _ctx.Images.ToList();
+            var ListOfImages = new List<ImageVieModel>();
+            var images = _ctx.Images.ToList();
+
+            foreach (var imgs in images)
+            {
+
+                var categories = _ctx.Categories.Where(x => x.Id == imgs.CategoryId);
+                var catName = "";
+                foreach(var cats in categories)
+                {
+                    catName = cats.Name;
+                }
+
+                var viewModel = new ImageVieModel();
+                {
+                    viewModel.ImageUrl = imgs.ImageUrl;
+                    viewModel.FileName = imgs.FileName;
+                    viewModel.CategoryName = catName;
+                }
+
+                ListOfImages.Add(viewModel);
+            }
+
+            return ListOfImages;
         }
     }
 }

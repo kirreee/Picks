@@ -23,7 +23,7 @@ namespace Picks.Web.Api
 
         [HttpGet]
         [Route("GetCategories")]
-        public ActionResult<List<Category>> GetCategories()
+        public ActionResult<List<CategoryViewModel>> GetCategories()
         {
             try
             {

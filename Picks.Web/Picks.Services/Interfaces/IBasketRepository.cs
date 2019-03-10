@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Picks.Services.Helpers
+namespace Picks.Services.Interfaces
 {
-    public static class ImageHelper
+    public class IBasketRepository
     {
-      
     }
 }

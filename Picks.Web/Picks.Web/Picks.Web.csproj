@@ -20,7 +20,9 @@
 
 
   <ItemGroup>
+    <Folder Include="images\" />
     <Folder Include="wwwroot\ImageUpload\" />
+    <Folder Include="wwwroot\ImagesZipFiles\" />
   </ItemGroup>
 
 </Project>

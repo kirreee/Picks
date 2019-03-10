@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container" ng-controller="categoryCtrl">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1>Categories</h1>
+            <hr />
+        </div>
+        <div class="col-md-12 text-center pt-2 pb-2">
+            <small class="font-weight-bold">Category name</small>
+            <input type="text" placeholder="My category name" class="form-control w-50" id="categoryNameInput" ng-model="category.name" />
+            <small id="errorMsg"><i class="msg-text">Namn måste fyllas i</i></small>
+        </div>
+        <div class="col-md-12 text-center  pt-3 pb-3">
+            <button class="adCategory-btn" ng-click="adCategory();">Create category</button>
+            <hr />
+        </div>
+    </div>
+    <div class="row" ng-if="!isEmpty">
+        <div class="col-md-12 text-center pt-2 pb-2">
+            <h4 class="listCat-title">List of all categories</h4>
+        </div>
+        <div class="col-md-12 text-center" ng-repeat="cats in categories">
+            {{cats.name}}
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+    .listCat-title{
+        text-decoration:underline;
+    }
+    #errorMsg {
+        display: none;
+    }
+    .msg-text{
+        color:#ff0000;
+    }
+    input {
+        margin: auto;
+        border-radius: 25px !important;
+    }
+    .adCategory-btn {
+        font-family: 'Montserrat', sans-serif !important;
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+        border-radius: 25px;
+        border-color: rgba(0, 0, 0, 0.00);
+        height:2em;
+        outline: none !important;
+        cursor: pointer;
+    }
+    #categoryNameInput{
+        width:15em!important;
+        height:2em!important;
+    }
+</style>

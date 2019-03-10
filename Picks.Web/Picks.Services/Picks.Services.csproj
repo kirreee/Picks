@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Picks.DAL\Picks.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

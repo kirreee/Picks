@@ -28,4 +28,14 @@ namespace Picks.Services.ViewModels
         public string ImageUrl { get; set; }
         public int CategoryId { get; set; }
     }
+
+    public class DownloadImageViewModel
+    {
+        public string FileName { get; set; }
+    }
+
+    public class GetImagesByCategory
+    {
+        public string CategoryName { get; set; }
+    }
 }

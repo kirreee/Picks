@@ -7,10 +7,15 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.navbar {
+    background-color: #cea4a4e3 !important;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
   font-size: 14px;
+
 }
 @media (min-width: 768px) {
   html {
@@ -42,8 +47,9 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #f5a6a6;
 }
 .footer {
   position: absolute;
@@ -53,4 +59,8 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.nav-link, h1, h2, h3, h4, h5, h6, span, p, small {
+    font-family: 'Montserrat', sans-serif !important;
 }

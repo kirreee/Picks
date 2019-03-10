@@ -30,7 +30,7 @@ namespace Picks.Web
         {
 
             services.AddDbContext<DefaultDataContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.Configure<CookiePolicyOptions>(options =>
             {

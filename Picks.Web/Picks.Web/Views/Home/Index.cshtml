@@ -2,104 +2,204 @@
     ViewData["Title"] = "Home Page";
 }
 
-<style>
-    #file{
-        border-radius:25px;
-        border-color:rgba(0, 0, 0, 0.00);
-        background-color:#000000;
-        color:#ffffff;
-        font-weight:bold;
-    }
-    #sumbit {
-        border-radius: 25px;
-        border-color: rgba(0, 0, 0, 0.00);
-        background-color:#34c81d;
-        color:#ffffff;
-        font-weight:bold;
-    }
-    input,select,option{
-        border-radius:25px!important;
-    }
-</style>
 
-<div class="container">
-    <div class="row" style="background-color:aliceblue;">
+
+
+<div class="container" ng-controller="homeCtrl">
+    <div class="row">
         <div class="col-md-12 text-center">
-            <h3>Upload Image</h3>
+            <h1>Picks</h1>
+            <h5>Upload and download images</h5>
             <hr />
         </div>
         <div class="col-md-12 text-center">
-            <form id="form" name="form" action="/uploader" enctype="multipart/form-data" method="post">
-            <div class="buttons">
-                <div class="upload-button">
-                    <input id="file" name="files" type="file" size="1" multiple >
+            <form id="form" name="form" action="/uploader" enctype="multipart/form-data" method="post" class="row">
+                <div class="col-xl-3 col-lg-12 offset-xl-3 text-center">
+                    <div class="col-md-12">
+                        <small class="font-weight-bold">Upload image</small>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="upload-button">
+                            <input id="file" name="files" type="file" size="1" multiple>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="col-xl-3 co-lg-12 text-center" ng-if="!IsCategoriesEmpty">
+                    <div class="col-md-12">
+                        <small class="font-weight-bold">Categories</small>
+                    </div>
+                    <div class="col-md-12">
+                        <select class="form-control" id="categorySelectList" style="width:48%;">
+                            <option ng-repeat="item in categories" id="{{item.id}}">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-12 text-center" ng-if="IsCategoriesEmpty">
+                    <div class="col-md-12">
+                        <small class="font-weight-bold">No categories found</small>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="goToCategories-btn">Create category here!</button>
+                    </div>
+                </div>
             </form>
+            <div class="col-md-12">
+                <input class="mt-4" type="button" id="sumbit" value="Upload image" ng-click="uploadImage()" />
+            </div>
             <hr />
-            <select class="form-control w-50" id="categorySelectList"></select>
-            <br />
-            <input type="button" id="sumbit" value="Upload Files" />
-            <hr />
-            <h5>Förhandsvisning senast uppladdat</h5>
         </div>
-        <br />
-        <div class="col-md-12 text-center" id="imageHolder">
-            <img src="" id="imgPreView" />
-        </div>
+        <hr />
     </div>
-    <div class="row mt-5" style="background-color:antiquewhite;">
-        <div class="col-md-12 text-center ">
-            <h3>Create a new category</h3><hr />
-        </div>
-        <div class="col-md-12 text-center">
-            <input type="text" placeholder="Name" class="form-control w-50" id="categoryName" />
-        </div>
-        <div class="col-md-12 text-center mt-3">
-            <button class="btn btn-sm btn-success" id="sumbitCategory">Create category</button>
-        </div>
-    </div>
-    <div class="row mt-5" style="background-color:aquamarine;">
-        <div class="col-md-12 text-center">
-            <h3>Categories</h3>
-            <hr />
-        </div>
-        <div class="col-md-6 text-center">
-           
-        </div>
-        <div class="col-md-3" id="displayCategoryName">
-
-        </div>
-        <div class="col-md-3 text-center">
-            <img src="" class="img-fluid" />
-        </div>
-    </div>
-    <div class="row mt-5" style="background-color:burlywood;">
-        <div class="col-md-12 text-center">
-            <h3 class="title">Images</h3>
-            <hr />
-        </div>
-        
+    <div class="row">
         <div class="col-md-12">
             <div class="row" id="img-list">
-
+                <div class="col-md-12 text-center">
+                    <p class="font-weight-bold">
+                        Filter images by categories
+                    </p>
+                    <select class="form-control" id="selectListCategories">
+                        <option>Show all</option>
+                        <option ng-repeat="item in categories">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-12 text-center pt-2 pb-2">
+                    <button class="filtrering-btn" ng-click="startFiltrering()">Start  Filter</button>
+                   
+                </div>
+                <div class="col-md-2 img-holder text-center" ng-repeat="item in images">
+                    <div class="col-md-12">
+                        <input type="text" ng-model="item.fileName" hidden />
+                        <img src="~/ImageUpload/{{item.imageUrl}}" class="img-fluid p-3" style="min-height:150px;" />
+                    </div>
+                    <div class="col-md-12">
+                        <button class="basketAd-btn" ng-click="adImageToBasket(item)">Add to basket</button>
+                    </div>
+                    <div class="col-md-12 pt-2 pb-2">
+                        <input type="text" id="categoryName{{item.id}}" hidden ng-model="item.fileName" />
+                        <button class="downloadImage-btn" ng-click="downloadImage(item.id)">Download</button>
+                    </div>
+                </div>
             </div>
-            
         </div>
     </div>
 </div>
 
+
+
+
 <style>
-    #categoryName, select{
+    .basketAd-btn, .downloadImage-btn, .goToCategories-btn {
+        border-radius: 25px;
+        background-color: #d09c9c8c;
+        border-color: rgba(0, 0, 0, 0.00);
+        color: #ffffff;
+        outline: none !important;
+        cursor: pointer;
+        width: 100% !important;
+        font-family: 'Montserrat', sans-serif !important;
+    }
+
+        .basketAd-btn:hover, .downloadImage-btn:hover, .goToCategories-btn:hover {
+            background-color: #000000;
+        }
+    .filtrering-btn {
+        border-radius: 25px;
+        border-color:rgba(0, 0, 0, 0.00);
+        width:10em;
+        background-color: #000000;
+        color: #ffffff;
+        font-weight:bold;
+        font-family: 'Montserrat', sans-serif !important;
+        cursor:pointer;
+        outline:none!important;
+    }
+
+    .img-holder {
+        padding: 0.5em;
+        margin: 0.5em;
+        border-radius: 25px;
+        border: solid 2px;
+        border-color: whitesmoke;
+    }
+
+        .img-holder img {
+            max-height: 155px;
+        }
+
+    #categoryName, select {
         margin: auto;
     }
-    .title{
-        text-decoration:underline;
-        padding:5px 5px;
 
+    .title {
+        text-decoration: underline;
+        padding: 5px 5px;
     }
-    img{
-        padding:5px 5px;
+
+    img {
+        padding: 5px 5px;
+    }
+
+    #file {
+        border-radius: 25px;
+        border-color: rgba(0, 0, 0, 0.00);
+        background-color: #b97a7ab5;
+        color: #ffffff;
+        font-weight: bold;
+        width: 100%;
+    }
+
+    #sumbit {
+        border-radius: 25px;
+        border-color: rgba(0, 0, 0, 0.00);
+        background-color: #000000;
+        color: #ffffff;
+        font-family: 'Montserrat', sans-serif !important;
+        cursor: pointer;
+        outline: none !important;
+    }
+
+    input, select, option {
+        border-radius: 25px !important;
+        cursor: pointer;
+    }
+
+    select {
+        background-color: #b97a7ab5 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        width: 15em !important;
+        height: 2em !important;
+    }
+
+        select option {
+            color: #ffffff !important;
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+    .swal-button {
+        margin-right: 13em !important;
+        background-color: #7cd1f900 !important;
+        border: none !important;
+        border-color: none !important;
+        outline: none !important;
+    }
+
+    .swal-text {
+        font-size: 17px !important;
+        color: rgb(255, 255, 255) !important;
+    }
+
+    .swal-title {
+        color: rgb(255, 242, 242) !important;
+    }
+
+    .swal-modal {
+        background-color: #f5a6a6 !important;
+    }
+
+    @@media (max-width:1200px) {
+        #file, .goToCategories-btn {
+            width: 50% !important;
+        }
     }
 </style>
 

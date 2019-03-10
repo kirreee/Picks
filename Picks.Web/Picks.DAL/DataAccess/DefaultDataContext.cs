@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Picks.DAL.Models;
 using Picks.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ namespace Picks.DAL.DataAccess
 
         public DbSet<Category>Categories { get; set; }
         public DbSet<Image>Images { get; set; }
-
-
+        public DbSet<Basket> Basket { get; set; }
     }
 }

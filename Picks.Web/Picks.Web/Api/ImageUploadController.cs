@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Picks.DAL.DataAccess;
 using Picks.Services.Interfaces;
 using Picks.Services.ViewModels;
@@ -24,22 +26,25 @@ namespace Picks.Web.Api
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IImageRepository _repo;
 
-        public ImageUploadController(DefaultDataContext context, 
+        public ImageUploadController(DefaultDataContext context,
             IHostingEnvironment hostingEnvironment, IImageRepository repository)
         {
             _ctx = context;
             _hostingEnvironment = hostingEnvironment;
             _repo = repository;
         }
-
-        [HttpPost]
+        
         [Route("adImage")]
+        [HttpPost]
         public IActionResult AdFile(List<IFormFile> files)
         {
 
-            IList<string> allowedFileExtension = new List<string> { ".jpg", "jpeg", "png" };
-            
+            if (files.Count() == 0)
+            {
+                return NotFound();
+            }
 
+            IList<string> allowedFileExtension = new List<string> { ".jpg", ".jpeg", ".png" };
             var fileName = "";
 
             foreach (var item in files)
@@ -88,24 +93,25 @@ namespace Picks.Web.Api
             }
         }
 
-        [HttpPost]
         [Route("SaveImage")]
+        [HttpPost]
         public IActionResult SaveImage(SaveImageViewModel model)
         {
 
             Image image = _ctx.Images
                 .FirstOrDefault(x => x.Id == model.Id);
 
+            image.Category = _ctx.Categories
+               .FirstOrDefault(x => x.Id == model.CategoryId);
+
             image.FileName = model.FileName;
             image.ImageUrl = model.ImageUrl;
             image.CategoryId = model.CategoryId;
-            image.Category = _ctx.Categories
-                .FirstOrDefault(x => x.Id == model.CategoryId);
 
             var vm = new ImageVieModel();
             {
                 vm.CategoryName = image.Category.Name;
-                vm.FileName = image.FileName;
+                vm.FileName = image.FileName + new Guid();
                 vm.ImageUrl = image.ImageUrl;
             }
 
@@ -122,18 +128,66 @@ namespace Picks.Web.Api
             }
         }
 
-        [HttpGet]
         [Route("getAllImages")]
+        [HttpGet]
         public IActionResult GetImages()
         {
             try
             {
                 return Ok(_repo.GetImages());
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return NotFound(ex);
             }
         }
+
+        [Route("downloadImage")]
+        [HttpPost]
+        public IActionResult DownloadImage(DownloadImageViewModel model)
+        {
+            var fileName = model.FileName;
+            if(string.IsNullOrEmpty(fileName))
+            {
+                return NotFound();
+            }
+
+            var guidId = Guid.NewGuid();
+            string zipName = "Images" + guidId + ".zip";
+            string rootPath = _hostingEnvironment.WebRootPath + "/ImageUpload/";
+            string zipPath = _hostingEnvironment.WebRootPath + "/ImagesZipFiles/";
+            if (string.IsNullOrEmpty(rootPath) || string.IsNullOrEmpty(zipPath))
+            {
+                return Ok("Root Path not found!");
+            }
+
+            var zip = ZipFile.Open(zipPath + zipName, ZipArchiveMode.Create);
+
+            try
+            {
+                zip.CreateEntryFromFile(rootPath + model.FileName, Path.GetFileName(rootPath + model.FileName), CompressionLevel.Optimal);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            zip.Dispose();
+            return Ok(zipName);
+        }
+
+        [Route("filteringImage")]
+        [HttpPost]
+        public IActionResult GetImagesByCategories(GetImagesByCategory model)
+        {
+            if(model.CategoryName == "Show all")
+            {
+                return Ok(_ctx.Images.ToList());
+            }
+
+            var images = _ctx.Images.Where(x => x.Category.Name == model.CategoryName);
+            return Ok(images);
+        }
+       
     }
 }
