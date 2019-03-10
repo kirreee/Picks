@@ -27,7 +27,7 @@ namespace Picks.Web.Api
         {
             var viewModelList = new List<BasketViewModel>();
             var basketItems = _ctx.Basket.ToList();
-            foreach(var item in basketItems)
+            foreach (var item in basketItems)
             {
                 var vm = new BasketViewModel();
                 {
@@ -63,8 +63,28 @@ namespace Picks.Web.Api
             }
         }
 
-        [Route("removeBasketItem/{id}")]
+        [Route("RemoveAllItemsFromBasket")]
         [HttpPost]
+        public IActionResult RemoveAllItemsFromBasket(IEnumerable<RemoveAllImagesFromBasketViewModel> model)
+        {
+            if (model.Count() <= 0)
+            {
+                return NotFound();
+            }
+            foreach (var item in model)
+            {
+                Basket basket = _ctx.Basket
+                    .FirstOrDefault(x => x.Id == item.Id);
+
+                _ctx.Basket.Remove(basket);
+                _ctx.SaveChanges();
+            }
+
+            return Ok();
+        }
+
+        [Route("removeBasketItem/{id}")]
+        [HttpDelete]
         public IActionResult RemoveItemFromBasket(int id)
         {
             if (id <= 0)

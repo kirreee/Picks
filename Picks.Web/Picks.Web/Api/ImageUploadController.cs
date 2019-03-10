@@ -177,12 +177,17 @@ namespace Picks.Web.Api
             return Ok(zipName);
         }
 
-        [Route("downloadAllImagesFromBasket")]
+        [Route("downloadImagesFromBasket")]
         [HttpPost]
         public IActionResult DownloadAllImagesFromBasket(IEnumerable<DownloadImageViewModel> model)
         {
 
-            foreach(var basketItem in model)
+            if(model.Count() <= 0)
+            {
+                return NotFound();
+            }
+
+            foreach (var basketItem in model)
             {
                 Basket basket = _ctx.Basket.FirstOrDefault(x => x.Id == basketItem.Id);
                 _ctx.Basket.Remove(basket);

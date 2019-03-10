@@ -16,4 +16,9 @@ namespace Picks.Services.ViewModels
         public int Id { get; set; }
         public string FileName { get; set; }
     }
+    
+    public class RemoveAllImagesFromBasketViewModel
+    {
+        public int Id { get; set; }
+    }
 }

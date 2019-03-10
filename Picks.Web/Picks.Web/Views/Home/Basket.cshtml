@@ -12,26 +12,65 @@
         </div>
         <div class="col-md-12 text-center">
             <button class="downloadAllImages-btn" ng-click="downloadAllImages()">Download all images</button>
+            <button class="downloadAllImages-btn" ng-click="downloadTargetImage()">Download selected image</button>
+            <button class="removeAllImagesFromBasket-btn" ng-click="removeAllImageFromBasket()">Remove all images from basket</button>
             <hr />
         </div>
-        <div class="col-md-2" ng-repeat="imgs in images">
-            <img src="~/ImageUpload/{{imgs.fileName}}" id="{{img.id}}" class="img-fluid" />
-            <input hidden type="text" id="{{imgs.id}}" class="fisk" ng-model="imgs.fileName" />
-            <input hidden type="number" id="ostKaka" class="ostKaka" ng-model="imgs.id" />
-            <hr />
+        <div class="col-md-3 ml-3 border-holder-image text-center" id="{{image.id}}" ng-repeat="image in images">
+            <img src="~/ImageUpload/{{image.fileName}}" class="img-fluid imgs" />
+            <div class="col-md-12 text-center pt-2 pb-2">
+                <button class="selectImage-btn w-100" id="{{image.id}}" title="{{image.fileName}}" ng-click="selectetImage($event)">Select image to download</button>
+            </div>
+            <div class="col-md-12 text-center pt-2 pb-2">
+                <button class="removeImageFromBasket-btn w-100" ng-click="removeImageFromBasket(image.id)">Remove from basket</button>
+            </div>
         </div>
     </div>
 </div>
 
+
+
 <style>
-    .downloadAllImages-btn{
-        border-radius:25px;
-        background-color:#000000;
-        border-color:rgba(0, 0, 0, 0.00);
-        color:#ffffff;
-        font-weight:bold;
-        outline:none!important;
-        cursor:pointer;
+    .selectImage-btn, .removeImageFromBasket-btn, .removeAllImagesFromBasket-btn {
+        border-radius: 25px;
+        background-color: #80808069;
+        border-color: rgba(255, 255, 255, 0.00);
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none !important;
+    }
+
+    .downloadAllImages-btn {
+        border-radius: 25px;
+        background-color: #80808069;
+        border-color: rgba(0, 0, 0, 0.00);
+        color: #ffffff;
+        font-weight: bold;
+        outline: none !important;
+        cursor: pointer;
+    }
+
+        .downloadAllImages-btn:hover, .removeImageFromBasket-btn:hover, .selectImage-btn:hover, .removeAllImagesFromBasket-btn:hover{
+            background-color: #000000;
+        }
+
+    .border-holder-image {
+        border-radius: 25px;
+        border: solid 2px;
+        cursor: pointer;
+    }
+
+        .border-holder-image img {
+            padding: 1em 1em;
+        }
+
+    .active {
+        background-color: black;
+    }
+    .imgs {
+        min-height: 200px !important;
+        max-height:200px!important;
     }
 </style>
 

@@ -55,7 +55,7 @@
             <div class="row" id="img-list">
                 <div class="col-md-12 text-center">
                     <p class="font-weight-bold">
-                        Filter images by categories
+                        Filter images by category
                     </p>
                     <select class="form-control text-center" id="selectListCategories">
                         <option>Show all</option>
@@ -64,6 +64,7 @@
                 </div>
                 <div class="col-md-12 text-center pt-2 pb-2">
                     <button class="filtrering-btn" ng-click="startFiltrering()">Start Filter</button>
+                    <hr />
                 </div>
                 <div class="col-md-2 img-holder text-center" ng-repeat="item in images">
                     <div class="col-md-12">
@@ -114,7 +115,7 @@
         width: 10em;
         background-color: #000000;
         color: #ffffff;
-        font-weight: bold;
+       
         font-family: 'Montserrat', sans-serif !important;
         cursor: pointer;
         outline: none !important;
