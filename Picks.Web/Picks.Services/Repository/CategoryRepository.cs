@@ -33,31 +33,29 @@ namespace Picks.Services.Repository
 
         public List<CategoryViewModel> GetCategories()
         {
+
+            var categoriesList = new List<CategoryViewModel>();
             //var imageList = new List<Image>();
-            var vm = new List<CategoryViewModel>();
-
             var categories = _ctx.Categories.ToList();
-            //var images = _ctx.Images.ToList();
-
-            //foreach (var imgs in images)
-            //{
-            //   imageList.Add(_ctx.Images.FirstOrDefault(x => x.Id == imgs.Id));
-            //}
-
-            foreach (var item in categories)
+            categories.ForEach(category =>
             {
-                var viewModel = new CategoryViewModel();
+                //var images = _ctx.Images
+                //    .Where(x => x.CategoryId == category.Id)
+                //    .ToList();
+
+                //imageList.AddRange(images);
+
+                var categoryViewModel = new CategoryViewModel()
                 {
-                    viewModel.Id = item.Id;
-                    viewModel.Name = item.Name;
-                    //viewModel.Images = imageList;
-                    
-                }
+                    Id = category.Id,
+                    Name = category.Name
+                    //Images = imageList
+                };
 
-                vm.Add(viewModel);
-            }
+                categoriesList.Add(categoryViewModel);
+            });
 
-            return vm;
+            return categoriesList;
         }
     }
 }

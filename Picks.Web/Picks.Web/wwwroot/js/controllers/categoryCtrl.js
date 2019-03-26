@@ -6,9 +6,9 @@
         method: 'GET',
         url: '/api/Category/GetCategories'
     }).then(function successCallback(response) {
+        console.log(response.data);
         categories = response.data;
         $scope.categories = categories;
-        $scope.isEmpty = false;
         if (categories.length <= 0) {
             $scope.isEmpty = true;
         }
@@ -16,21 +16,19 @@
     });
 
 
-    
-
+    //Post category
     $scope.adCategory = function () {
-       
-        var name = $('#categoryNameInput').val();
+        let name = $('#categoryNameInput').val();
         if (name.length === 0) {
             $('#errorMsg').show();
             return;
         }
-        var model = {
+
+        let model = {
             Id: 0,
             Name: $scope.category.name
         };
 
-        //Post category
         $http({
             method: 'POST',
             url: '/api/Category/adCategory',

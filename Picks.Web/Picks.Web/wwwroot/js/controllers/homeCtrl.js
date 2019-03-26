@@ -8,16 +8,12 @@
         method: 'GET',
         url: '/api/Category/GetCategories'
     }).then(function successCallback(response) {
-        let IsCategoriesEmpty = false;
         categories = response.data;
-
         if (categories.length <= 0) {
             IsCategoriesEmpty = true;
         }
 
         $scope.categories = categories;
-    }, function errorCallback(response) {
-
     });
 
     //Get all images
@@ -25,19 +21,15 @@
         method: 'GET',
         url: "/api/ImageUpload/getAllImages"
     }).then(function successCallback(response) {
-
         images = response.data;
         $scope.images = images;
-
-    }, function errorCallback(response) {
-
     });
 
     //Post Image
     $scope.uploadImage = function () {
-        var input = document.getElementById('file');
-        var files = input.files;
-        var formData = new FormData();
+        let input = document.getElementById('file');
+        let files = input.files;
+        let formData = new FormData();
 
         for (var i = 0; i !== files.length; i++) {
             formData.append("files", files[i]);
@@ -50,9 +42,8 @@
             processData: false,
             contentType: false,
             success: function (response) {
-
-                var image = response;
-                var model = {
+                let image = response;
+                let model = {
                     Id: image.id,
                     FileName: image.fileName,
                     ImageUrl: image.imageUrl,
@@ -91,13 +82,10 @@
     };
 
     $scope.downloadImage = function (id) {
-        
-        var fileName = $('#categoryName' + id).val();
-        var model = {
+        let fileName = $('#categoryName' + id).val();
+        let model = {
             FileName: fileName
         };
-
-        
 
         $http({
             method: 'POST',
@@ -147,28 +135,23 @@
     };
 
     $scope.startFiltrering = function () {
-        var name = $('#selectListCategories :selected').text();
-        console.log(name);
-        
-        var model = {
+        let name = $('#selectListCategories :selected').text();
+        let model = {
             CategoryName: name
         };
-
 
         $http({
             method: 'POST',
             url: '/api/ImageUpload/filteringImage',
             data: model
         }).then(function successCallback(response) {
-
-            console.log(response.data);
             $scope.images = response.data;
-
         }, function errorCallback(response) {
-
-
+            swal({
+                title: 'something went wrong',
+                text: 'couldnt filter, try again!'
+            });
         });
-
     };
 
 });

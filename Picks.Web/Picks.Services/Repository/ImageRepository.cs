@@ -22,27 +22,25 @@ namespace Picks.Services.Repository
         {
             var ListOfImages = new List<ImageVieModel>();
             var images = _ctx.Images.ToList();
-
-            foreach (var imgs in images)
+            images.ForEach(img =>
             {
-
-                var categories = _ctx.Categories.Where(x => x.Id == imgs.CategoryId);
+                var categories = _ctx.Categories.Where(x => x.Id == img.CategoryId);
                 var catName = "";
-                foreach(var cats in categories)
+                foreach (var cats in categories)
                 {
                     catName = cats.Name;
                 }
 
-                var viewModel = new ImageVieModel();
+                var imageViewModel = new ImageVieModel()
                 {
-                    viewModel.Id = imgs.Id;
-                    viewModel.ImageUrl = imgs.ImageUrl;
-                    viewModel.FileName = imgs.FileName;
-                    viewModel.CategoryName = catName;
-                }
+                    Id = img.Id,
+                    ImageUrl = img.ImageUrl,
+                    FileName = img.FileName,
+                    CategoryName = catName
+                };
 
-                ListOfImages.Add(viewModel);
-            }
+                ListOfImages.Add(imageViewModel);
+            });
 
             return ListOfImages;
         }
